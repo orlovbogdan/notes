@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+.note {
+    min-width: 100px;
+    max-width: 300px;
+}

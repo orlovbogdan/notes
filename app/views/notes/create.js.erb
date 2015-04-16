@@ -1,0 +1,3 @@
+$('form[style*="top: <%= @note.ypos %>px; left: <%= @note.xpos %>px;"]').remove();
+$('body').append('<%=j render @note %>');
+initdraggable();

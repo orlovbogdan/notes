@@ -43,3 +43,6 @@ group :development, :test do
   gem 'spring'
 end
 
+
+gem 'jquery-ui-rails'
+gem 'best_in_place'
