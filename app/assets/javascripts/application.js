@@ -21,8 +21,9 @@
 //= require_tree .
 
 $(function(){
-    $(document).dblclick(function(e){
-        $.get($('body').data('new_note'), {ypos: e.pageY, xpos: e.pageX}, null, 'script' );
+    $('html').dblclick(function(e){
+        if (Object.prototype.toString.call(e.target) == '[object HTMLHtmlElement]')
+            $.get($('body').data('new_note'), {ypos: e.pageY, xpos: e.pageX}, null, 'script' );
     });
 
     initdraggable();
@@ -34,7 +35,9 @@ $(function(){
         }
     });
 
-    $(".best_in_place").best_in_place();
+    $(".best_in_place").best_in_place({
+        event: 'dblclick'
+    });
 
     $(document).on('keydown', 'textarea', function(e){
         if(e.keyCode == 27) {
