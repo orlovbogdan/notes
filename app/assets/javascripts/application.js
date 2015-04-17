@@ -35,6 +35,14 @@ $(function(){
     });
 
     $(".best_in_place").best_in_place();
+
+    $(document).on('keydown', 'textarea', function(e){
+        if(e.keyCode == 27) {
+            $(this).closest('form').remove();
+            e.preventDefault();
+        }
+    })
+
 });
 
 function initdraggable(){
