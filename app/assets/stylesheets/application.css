@@ -18,3 +18,15 @@
     min-width: 100px;
     max-width: 300px;
 }
+
+.ui-resizable-handle {
+    width: 5px;
+    height: 5px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    bottom: 0px;
+    position: absolute;
+    right: 0px;
+
+
+}

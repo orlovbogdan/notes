@@ -17,6 +17,7 @@
 //= require jquery-ui
 //= require best_in_place.jquery-ui
 //= require jquery-ui/draggable
+//= require jquery-ui/resizable
 //= require jquery.panzoom
 //= require_tree .
 
@@ -26,7 +27,7 @@ $(function(){
             $.get($('body').data('new_note'), {ypos: e.pageY, xpos: e.pageX}, null, 'script' );
     });
 
-    initdraggable();
+    initnotes();
 
     $(document).on('keydown', 'textarea', function(e) {
         if(e.keyCode == 13 && !e.shiftKey) {
@@ -39,6 +40,7 @@ $(function(){
         event: 'dblclick'
     });
 
+
     $(document).on('keydown', 'textarea', function(e){
         if(e.keyCode == 27) {
             $(this).closest('form').remove();
@@ -48,7 +50,7 @@ $(function(){
 
 });
 
-function initdraggable(){
+function initnotes(){
     $('.note').draggable({
         stop: function( event, ui ) {
             $.ajax({
@@ -59,6 +61,20 @@ function initdraggable(){
                 url : $(this).data('update-url'),
                 type : 'PATCH',
                 data : JSON.stringify({ypos: ui.position.top, xpos: ui.position.left})
+            });
+        }
+    });
+    $('.note').resizable({
+        handles: "se",
+        stop: function (event, ui) {
+            $.ajax({
+                headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json'
+                },
+                url : $(this).data('update-url'),
+                type : 'PATCH',
+                data : JSON.stringify({width: ui.size.width, height: ui.size.height})
             });
         }
     });
