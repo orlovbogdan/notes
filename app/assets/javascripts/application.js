@@ -51,19 +51,78 @@ $(function(){
 });
 
 function initnotes(){
-    $('.note').draggable({
-        stop: function( event, ui ) {
-            $.ajax({
-                headers : {
-                    'Accept' : 'application/json',
-                    'Content-Type' : 'application/json'
-                },
-                url : $(this).data('update-url'),
-                type : 'PATCH',
-                data : JSON.stringify({ypos: ui.position.top, xpos: ui.position.left})
+
+    $('html, body, #selectable').height($(document).height());
+
+    offset = {top:0, left:0};
+
+    $("#selectable > div").draggable({
+        stop: function (event, ui) {
+            if ($(this).hasClass("ui-selected")) {
+                var dt = ui.position.top - offset.top, dl = ui.position.left - offset.left;
+                $(".note.ui-selected").each(function () {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        url: $(this).data('update-url'),
+                        type: 'PATCH',
+                        data: JSON.stringify({ypos: $(this).data("offset").top + dt, xpos: $(this).data("offset").left + dl})
+                    });
+                })
+            } else {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: $(this).data('update-url'),
+                    type: 'PATCH',
+                    data: JSON.stringify({ypos: ui.position.top, xpos: ui.position.left})
+                });
+            };
+            $('html, body, #selectable').height($(document).height());
+        },
+        start: function(ev, ui) {
+            if ($(this).hasClass("ui-selected")){
+                $(".note.ui-selected").each(function() {
+                    $(this).data("offset", $(this).offset());
+                });
+            }
+            else {
+                $("#selectable > div").removeClass("ui-selected");
+            }
+            offset = $(this).offset();
+        },
+        drag: function(ev, ui) {
+            var dt = ui.position.top - offset.top, dl = ui.position.left - offset.left;
+            $(".note.ui-selected").not(this).each(function() {
+                $(this).css({top: $(this).data("offset").top + dt, left: $(this).data("offset").left + dl});
             });
         }
     });
+
+    $("#selectable").selectable();
+
+    $("#selectable > div").click( function(e){
+        if (e.metaKey == false) {
+            $("#selectable > div").removeClass("ui-selected");
+            $(this).addClass("ui-selecting");
+        }
+        else {
+            if ($(this).hasClass("ui-selected")) {
+                $(this).removeClass("ui-selected");
+            }
+            else {
+                $(this).addClass("ui-selecting");
+            }
+        }
+
+        $("#selectable").data("ui-selectable")._mouseStop(null);
+    });
+
+
     $('.note').resizable({
         handles: "se",
         stop: function (event, ui) {
