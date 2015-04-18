@@ -23,8 +23,15 @@
 
 $(function(){
     $('html').dblclick(function(e){
-        if (Object.prototype.toString.call(e.target) == '[object HTMLHtmlElement]')
+        if (e.target.getAttribute('id') == 'selectable'){
             $.get($('body').data('new_note'), {ypos: e.pageY, xpos: e.pageX}, null, 'script' );
+        }
+    });
+
+    $('html').click(function(e){
+        if (e.target.getAttribute('id') == 'selectable'){
+            $("*").removeClass("ui-selected");
+        }
     });
 
     initnotes();
@@ -53,10 +60,11 @@ $(function(){
 function initnotes(){
 
     $('html, body, #selectable').height($(document).height());
+    $('html, body, #selectable').width($(document).width());
 
     offset = {top:0, left:0};
 
-    $("#selectable > div").draggable({
+    $(".note").draggable({
         stop: function (event, ui) {
             if ($(this).hasClass("ui-selected")) {
                 var dt = ui.position.top - offset.top, dl = ui.position.left - offset.left;
@@ -91,7 +99,7 @@ function initnotes(){
                 });
             }
             else {
-                $("#selectable > div").removeClass("ui-selected");
+                $(".note").removeClass("ui-selected");
             }
             offset = $(this).offset();
         },
@@ -103,7 +111,9 @@ function initnotes(){
         }
     });
 
-    $("#selectable").selectable();
+    $("#selectable").selectable({
+        distance: 1
+    });
 
     $("#selectable > div").click( function(e){
         if (e.metaKey == false) {
