@@ -99,7 +99,7 @@ function initnotes(){
                 });
             }
             else {
-                $(".note").removeClass("ui-selected");
+                $("*").removeClass("ui-selected");
             }
             offset = $(this).offset();
         },
@@ -117,12 +117,13 @@ function initnotes(){
 
     $("#selectable > div").click( function(e){
         if (e.metaKey == false) {
-            $("#selectable > div").removeClass("ui-selected");
+            $("*").removeClass("ui-selected");
             $(this).addClass("ui-selecting");
         }
         else {
             if ($(this).hasClass("ui-selected")) {
                 $(this).removeClass("ui-selected");
+                $(this).find('*').removeClass("ui-selected");
             }
             else {
                 $(this).addClass("ui-selecting");
