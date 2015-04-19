@@ -46,3 +46,7 @@ end
 
 gem 'jquery-ui-rails'
 gem 'best_in_place'
+
+
+gem 'awesome_nested_set'
+gem 'the_sortable_tree'

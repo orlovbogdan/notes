@@ -1,4 +1,7 @@
 <div data-update-url="<%= note_path(note) %>" class="note" style="position:absolute;top: <%=note.ypos %>px; left: <%=note.xpos %>px;  border: black solid 1px; padding: 3px; width: <%=note.width %>px; height: <%=note.height %>px;">
   <div style="float:left"><%= best_in_place note, :text, :as => :textarea, :display_with => lambda { |v| simple_format(v, {}, wrapper_tag: 'div') } %></div>
   <div style="position: absolute;right: 0px;margin-top: -7px;"><%= link_to 'x', note, method: :delete, remote: true %></div>
+  <%= content_tag('ol', class: 'sortable_tree expandable', data: { rebuild_url: rebuild_notes_url, expand_node_url: expand_node_notes_url } ) do
+    expandable_tree note , {title: :text}
+    end %>
 </div>

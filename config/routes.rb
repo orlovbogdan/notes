@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  resources :notes
+  resources :notes do
+    collection do
+      get :manage
+
+      # required for Sortable GUI server side actions
+      post :rebuild
+      post :expand_node
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

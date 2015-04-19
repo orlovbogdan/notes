@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416131456) do
+ActiveRecord::Schema.define(version: 20150419092049) do
 
   create_table "notes", force: :cascade do |t|
     t.text     "text"
@@ -19,8 +19,13 @@ ActiveRecord::Schema.define(version: 20150416131456) do
     t.integer  "ypos"
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.integer  "depth"
+    t.integer  "children_count"
   end
 
 end

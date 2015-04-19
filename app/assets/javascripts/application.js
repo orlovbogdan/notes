@@ -19,6 +19,8 @@
 //= require jquery-ui/draggable
 //= require jquery-ui/resizable
 //= require jquery.panzoom
+//= require jquery.ui.nestedSortable
+//= require sortable_tree/initializer
 //= require_tree .
 
 $(function(){
