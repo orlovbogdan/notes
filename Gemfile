@@ -43,6 +43,6 @@ group :development, :test do
   gem 'spring'
 end
 
-
+gem 'acts_as_list'
 gem 'jquery-ui-rails'
 gem 'best_in_place'

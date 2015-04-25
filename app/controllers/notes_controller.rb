@@ -4,7 +4,7 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
-    @notes = Note.all
+    @notes = Note.where(parent_id: nil)
   end
 
   # GET /notes/1
@@ -15,6 +15,7 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new(xpos: params[:xpos], ypos: params[:ypos])
+    render layout: false
   end
 
   # GET /notes/1/edit
@@ -55,6 +56,6 @@ class NotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def note_params
-      params.require(:note).permit(:text, :xpos, :ypos, :width, :height)
+      params.require(:note).permit(:text, :xpos, :ypos, :width, :height, child_note_links_attributes: [ :parent_id, :position ], parent_note_links_attributes: [:parent_id, :position])
     end
 end

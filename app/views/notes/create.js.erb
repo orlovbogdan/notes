@@ -1,3 +1,8 @@
-$('form[style*="top: <%= @note.ypos %>px; left: <%= @note.xpos %>px;"]').remove();
-$('#selectable').append('<%=j render @note %>');
-initnotes();
+if(<%= @note.parents.exists? %>){
+  $('input[value="<%= params[:authenticity_token] %>').closest('.note').find('.sub-notes').append('<li><%=j render 'sub_note', note: @note %></li>')
+} else {
+ $('#selectable').append('<%=j render @note %>');
+ initnotes();
+}
+$('input[value="<%= params[:authenticity_token] %>').closest('form').remove();
+

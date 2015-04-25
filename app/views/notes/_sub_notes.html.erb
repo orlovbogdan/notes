@@ -1,0 +1,6 @@
+<% notes.each do |note| %>
+    <li>
+      <%= render 'sub_note', note: note %>
+    </li>
+    <%= render 'sub_notes', notes: note.children if note.children.present? %>
+<% end %>

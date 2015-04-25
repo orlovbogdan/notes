@@ -19,6 +19,7 @@
 //= require jquery-ui/draggable
 //= require jquery-ui/resizable
 //= require jquery.panzoom
+//= require jquery.mjs.nestedSortable
 //= require_tree .
 
 $(function(){
@@ -53,18 +54,97 @@ $(function(){
             $(this).closest('form').remove();
             e.preventDefault();
         }
-    })
+    });
+
+    $('.new-sub-note').on('click', function(e){
+        var th = this;
+        var pos =  2;
+        $.get($(this).attr('href'), { parent_id: $(this).attr('data-note-id'), position: pos}, function(data){
+            $(th).closest('.note').find('.sub-notes').append(data);
+        });
+        e.preventDefault();
+    });
+
+
+
+
+
+
+
+
+
+    $('li').on('click', function (e) {
+        e.stopPropagation();
+        $(this).toggleClass('selected');
+    });
+    var ns = $('ol.sub-notes, ol.moved').nestedSortable({
+
+        connectWith: 'ol.moved, ol.sortable, #selectable',
+
+        forcePlaceholderSize: true,
+        handle: 'div',
+        helper: function (e, item) {
+            console.log('parent-helper');
+            console.log(item);
+            if (!item.hasClass('selected'))
+                item.addClass('selected');
+            var elements = $('.selected').not('.ui-sortable-placeholder').clone();
+            var helper = $('<ul/>');
+            item.siblings('.selected').addClass('hidden');
+            return helper.append(elements);
+        },
+        start: function (e, ui) {
+            var elements = ui.item.siblings('.selected.hidden').not('.ui-sortable-placeholder');
+            ui.item.data('items', elements);
+        },
+        receive: function (e, ui) {
+            ui.item.before(ui.item.data('items'));
+        },
+        stop: function (e, ui) {
+            ui.item.siblings('.selected').removeClass('hidden');
+            $('.selected').removeClass('selected');
+        },
+        items: 'li',
+        opacity: .6,
+        placeholder: 'placeholder',
+        revert: 250,
+        tabSize: 25,
+        tolerance: 'pointer',
+        toleranceElement: '> div',
+        maxLevels: 4,
+        isTree: true,
+        expandOnHover: 700,
+        startCollapsed: false,
+        change: function () {
+            console.log('Relocated item');
+        }
+    });
+
+    $('.disclose').on('click', function () {
+        $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        $(this).toggleClass('ui-icon-plusthick').toggleClass('ui-icon-minusthick');
+    });
+
+
 
 });
 
 function initnotes(){
+
+
+    /*$('.sub-notes').nestedSortable({
+        items: 'li',
+        toleranceElement: '> div'
+    });*/
+
+
 
     $('html, body, #selectable').height($(document).height());
     $('html, body, #selectable').width($(document).width());
 
     offset = {top:0, left:0};
 
-    $(".note").draggable({
+    $("#selectable > .note").draggable({
         stop: function (event, ui) {
             if ($(this).hasClass("ui-selected")) {
                 var dt = ui.position.top - offset.top, dl = ui.position.left - offset.left;
@@ -134,7 +214,7 @@ function initnotes(){
     });
 
 
-    $('.note').resizable({
+    $('#selectable > .note').resizable({
         handles: "se",
         stop: function (event, ui) {
             $.ajax({

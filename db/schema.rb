@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416131456) do
+ActiveRecord::Schema.define(version: 20150419105602) do
+
+  create_table "note_links", force: :cascade do |t|
+    t.integer  "note_id"
+    t.integer  "parent_id"
+    t.integer  "position"
+    t.integer  "link_type_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "note_links", ["link_type_id"], name: "index_note_links_on_link_type_id"
+  add_index "note_links", ["note_id"], name: "index_note_links_on_note_id"
+  add_index "note_links", ["parent_id"], name: "index_note_links_on_parent_id"
+  add_index "note_links", ["position"], name: "index_note_links_on_position"
 
   create_table "notes", force: :cascade do |t|
     t.text     "text"
@@ -19,8 +33,13 @@ ActiveRecord::Schema.define(version: 20150416131456) do
     t.integer  "ypos"
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.integer  "depth"
+    t.integer  "children_count"
   end
 
 end
